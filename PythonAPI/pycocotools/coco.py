@@ -62,6 +62,8 @@ if PYTHON_VERSION == 2:
 elif PYTHON_VERSION == 3:
     from urllib.request import urlretrieve
 
+from tensorflow.python.lib.io import file_io
+
 
 def _isArrayLike(obj):
     return hasattr(obj, '__iter__') and hasattr(obj, '__len__')
@@ -81,7 +83,7 @@ class COCO:
         if not annotation_file == None:
             print('loading annotations into memory...')
             tic = time.time()
-            dataset = json.load(open(annotation_file, 'r'))
+            dataset = json.load(file_io.FileIO(annotation_file, mode='r'))
             assert type(dataset)==dict, 'annotation file format {} not supported'.format(type(dataset))
             print('Done (t={:0.2f}s)'.format(time.time()- tic))
             self.dataset = dataset
